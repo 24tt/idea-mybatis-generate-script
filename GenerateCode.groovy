@@ -37,12 +37,12 @@ mapperXMLOutDir = outDir + "/mapper/"
 /**
  * 实体类包路径
  */
-entityClassPackage = "com.rrx.passport.provider.domain.core.dao.entity"
+entityClassPackage = "cc.chenzhihao.dao.entity"
 
 /**
  * Mybatis Mapper接口包路径
  */
-mapperInterfacePackage = "com.rrx.passport.provider.domain.core.dao.mapper"
+mapperInterfacePackage = "cc.chenzhihao.dao.mapper"
 
 /**************************************************** 以下源码建议不要修改 ****************************************************/
 
