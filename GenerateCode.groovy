@@ -37,7 +37,7 @@ autoGenerateCRUD = true
 /**
  * 文件输出目录
  */
-outDir = PROJECT.getBasePath() + "/generate/"
+outDir = PROJECT.getBasePath() + "/.idea/generate/"
 
 /**
  * 实体类文件 输出目录
