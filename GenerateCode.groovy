@@ -6,13 +6,33 @@ import java.time.LocalDateTime
 
 /**
  * Mybatis 代码自动生成脚本
- * V1.0
+ * V1.1
  */
 
-// 当前时间
-now = LocalDateTime.now().toString()
-
 /**************************************************** 用户自定义 ****************************************************/
+
+/**
+ * 实体类包路径
+ */
+entityClassPackage = "cc.chenzhihao.entity"
+
+/**
+ * Mybatis Mapper接口包路径
+ */
+mapperInterfacePackage = "cc.chenzhihao.mapper"
+
+/**
+ * 实体类继承的父类全限定类名
+ * 设置为空串，代表实体类不继承父类
+ */
+entityExtendsSupperClass = "cc.chenzhihao.entity.BaseEntity"
+
+/**
+ * 是否自动生成增删改查代码
+ */
+autoGenerateCRUD = true
+
+/**************************************************** 以下建议不要修改 ****************************************************/
 
 /**
  * 文件输出目录
@@ -34,17 +54,8 @@ mapperInterfaceOutDir = outDir + "/dao/"
  */
 mapperXMLOutDir = outDir + "/mapper/"
 
-/**
- * 实体类包路径
- */
-entityClassPackage = "cc.chenzhihao.dao.entity"
-
-/**
- * Mybatis Mapper接口包路径
- */
-mapperInterfacePackage = "cc.chenzhihao.dao.mapper"
-
-/**************************************************** 以下源码建议不要修改 ****************************************************/
+// 当前时间
+now = LocalDateTime.now().toString()
 
 
 /**
@@ -139,16 +150,14 @@ def generate(table) {
 /**
  * 生成Mybatis Mapper 类文件
  * @param out 文件输出流对象
- * @param entityClassName 类名
- * @param mapperClassName 类名
- * @param tableName 表名
- * @param tableComment 表注释
- * @param columns 字段列表
+ * @param param 参数
  */
 def generateMapperInterface(out, param) {
     out.println "package $mapperInterfacePackage;"
     out.println ""
-    out.println "import $param.entityClassPackage.$param.entityClassName;"
+    if (autoGenerateCRUD) {
+        out.println "import $entityClassPackage.$param.entityClassName;"
+    }
     out.println "import org.apache.ibatis.annotations.Mapper;"
     out.println "import org.apache.ibatis.annotations.Param;"
     out.println ""
@@ -163,49 +172,47 @@ def generateMapperInterface(out, param) {
     out.println "@Mapper"
     out.println "public interface $param.mapperClassName {"
     out.println ""
-    out.println "\t/**"
-    out.println "\t * 新增记录"
-    out.println "\t * "
-    out.println "\t * @param entity 实体对象"
-    out.println "\t * @return 插入记录条数"
-    out.println "\t */"
-    out.println "\tInteger insert(@Param(\"entity\") $param.entityClassName entity);"
-    out.println ""
-    out.println "\t/**"
-    out.println "\t * 根据主键删除记录"
-    out.println "\t * "
-    out.println "\t * @param $param.primaryColumn.propertyName 主键"
-    out.println "\t * @return 删除记录行数"
-    out.println "\t */"
-    out.println "\tInteger deleteByPrimaryKey(@Param(\"$param.primaryColumn.propertyName\") $param.primaryColumn.javaType $param.primaryColumn.propertyName);"
-    out.println ""
-    out.println "\t/**"
-    out.println "\t * 根据主键修改记录"
-    out.println "\t * "
-    out.println "\t * @param entity 实体对象"
-    out.println "\t * @return 修改记录行数"
-    out.println "\t */"
-    out.println "\tInteger updateByPrimaryKey(@Param(\"entity\") $param.entityClassName entity);"
-    out.println ""
-    out.println "\t/**"
-    out.println "\t * 根据主键查找单条记录"
-    out.println "\t * "
-    out.println "\t * @param $param.primaryColumn.propertyName 主键"
-    out.println "\t * @return 实体对象"
-    out.println "\t */"
-    out.println "\t$param.entityClassName selectByPrimaryKey(@Param(\"$param.primaryColumn.propertyName\") $param.primaryColumn.javaType $param.primaryColumn.propertyName);"
-    out.println ""
+    if (autoGenerateCRUD) {
+        out.println "\t/**"
+        out.println "\t * 新增记录"
+        out.println "\t * "
+        out.println "\t * @param entity 实体对象"
+        out.println "\t * @return 插入记录条数"
+        out.println "\t */"
+        out.println "\tInteger insert(@Param(\"entity\") $param.entityClassName entity);"
+        out.println ""
+        out.println "\t/**"
+        out.println "\t * 根据主键删除记录"
+        out.println "\t * "
+        out.println "\t * @param $param.primaryColumn.propertyName 主键"
+        out.println "\t * @return 删除记录行数"
+        out.println "\t */"
+        out.println "\tInteger deleteByPrimaryKey(@Param(\"$param.primaryColumn.propertyName\") $param.primaryColumn.javaType $param.primaryColumn.propertyName);"
+        out.println ""
+        out.println "\t/**"
+        out.println "\t * 根据主键修改记录"
+        out.println "\t * "
+        out.println "\t * @param entity 实体对象"
+        out.println "\t * @return 修改记录行数"
+        out.println "\t */"
+        out.println "\tInteger updateByPrimaryKey(@Param(\"entity\") $param.entityClassName entity);"
+        out.println ""
+        out.println "\t/**"
+        out.println "\t * 根据主键查找单条记录"
+        out.println "\t * "
+        out.println "\t * @param $param.primaryColumn.propertyName 主键"
+        out.println "\t * @return 实体对象"
+        out.println "\t */"
+        out.println "\t$param.entityClassName selectByPrimaryKey(@Param(\"$param.primaryColumn.propertyName\") $param.primaryColumn.javaType $param.primaryColumn.propertyName);"
+        out.println ""
+    }
     out.println "}"
 }
 
 /**
  * 生成Mybatis Mapper xml文件
  * @param out 文件输出流对象
- * @param entityClassName 实体类名
- * @param mapperClassName mapper类名
- * @param tableName 表名
- * @param tableComment 表注释
- * @param columns 字段列表
+ * @param param 参数
  */
 def generateMapperXml(out, param) {
     out.println "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
@@ -219,7 +226,8 @@ def generateMapperXml(out, param) {
     }
     out.println "\t</resultMap>"
     out.println ""
-    out.println "\t<sql id=\"base_columns\">"
+    out.println "\t<!-- 所有字段 -->"
+    out.println "\t<sql id=\"Base_Column_List\">"
     out.print "\t\t"
     param.columns.eachWithIndex { it, index ->
         out.print "`${it.columnName}`"
@@ -230,42 +238,69 @@ def generateMapperXml(out, param) {
     out.println ""
     out.println "\t</sql>"
     out.println ""
-    out.println "\t<insert id=\"insert\">"
-    out.println "\t\tINSERT INTO `$param.tableName` ("
-    out.print "\t\t\t"
-    param.columns.eachWithIndex { it, index ->
-        if (it.isPrimary) return
-        out.print "`${it.columnName}`"
-        if (index < param.columns.size() - 1) {
-            out.print ", "
+    if (autoGenerateCRUD) {
+        out.println "\t<insert id=\"insert\">"
+        out.println "\t\tINSERT INTO `$param.tableName` ("
+        out.print "\t\t\t"
+        param.columns.eachWithIndex { it, index ->
+            if (it.isPrimary) return
+            out.print "`${it.columnName}`"
+            if (index < param.columns.size() - 1) {
+                out.print ", "
+            }
         }
-    }
-    out.println "\n\t\t) VALUES ("
-    out.print "\t\t\t"
-    param.columns.eachWithIndex { it, index ->
-        if (it.isPrimary) return
-        out.print "#{entity.${it.propertyName}}"
-        if (index < param.columns.size() - 1) {
-            out.print ", "
+        out.println "\n\t\t) VALUES ("
+        out.print "\t\t\t"
+        param.columns.eachWithIndex { it, index ->
+            if (it.isPrimary) return
+            out.print "#{entity.${it.propertyName}}"
+            if (index < param.columns.size() - 1) {
+                out.print ", "
+            }
         }
+        out.println "\n\t\t)"
+        out.println "\t</insert>"
+        out.println ""
+        out.println "\t<delete id=\"deleteByPrimaryKey\">"
+        out.println "\t\tDELETE FROM `$param.tableName` WHERE `$param.primaryColumn.columnName` = #{$param.primaryColumn.propertyName}"
+        out.println "\t</delete>"
+        out.println ""
+        out.println "\t<update id=\"updateByPrimaryKey\">"
+        out.println "\t\tUPDATE `$param.tableName` SET"
+        param.columns.eachWithIndex { it, index ->
+            if (it.isPrimary) return
+            out.print "\t\t`${it.columnName}` = #{entity.${it.propertyName}}"
+            if (index < param.columns.size() - 1) {
+                out.print ",\n"
+            }
+        }
+        out.println "\n\t\tWHERE `$param.primaryColumn.columnName` = #{$param.primaryColumn.propertyName}"
+        out.println "\t</update>"
+        out.println ""
+        out.println "\t<select id=\"selectByPrimaryKey\" resultMap=\"BaseResultMap\">"
+        out.println "\t\tSELECT"
+        out.println "\t\t<include refid=\"Base_Column_List\"/>"
+        out.println "\t\tFROM `$param.tableName`"
+        out.println "\t\tWHERE `$param.primaryColumn.columnName` = #{$param.primaryColumn.propertyName}"
+        out.println "</select>"
+        out.println ""
     }
-    out.println "\n\t\t)"
-    out.println "\t</insert>"
-    out.println ""
     out.println "</mapper>"
 }
 
 /**
  * 生成数据库实体
  * @param out 文件输出流对象
- * @param className 类名
- * @param tableName 表名
- * @param tableComment 表注释
- * @param columns 字段列表
+ * @param param 参数
  */
 def generateEntity(out, param) {
     out.println "package $entityClassPackage;"
     out.println ""
+    if (isNotEmpty(entityExtendsSupperClass)) {
+        out.println "import $entityExtendsSupperClass;"
+        out.println "import lombok.EqualsAndHashCode;"
+        out.println "import lombok.ToString;"
+    }
     out.println "import lombok.Data;"
     out.println ""
     out.println "/**"
@@ -276,9 +311,17 @@ def generateEntity(out, param) {
     out.println " * "
     out.println " * @date $now"
     out.println " */"
+    if (isNotEmpty(entityExtendsSupperClass)) {
+        out.println "@EqualsAndHashCode(callSuper = true)"
+        out.println "@ToString(callSuper = true)"
+    }
     out.println "@Data"
-    out.println "public class $param.className {"
-    out.println ""
+    out.print "public class $param.entityClassName "
+    if (isNotEmpty(entityExtendsSupperClass)) {
+        def supperClassName = entityExtendsSupperClass.substring(entityExtendsSupperClass.lastIndexOf(".") + 1)
+        out.print "extends $supperClassName"
+    }
+    out.println "{\n"
     param.columns.each() {
         out.println "    /**"
         if (isNotEmpty(it.columnComment))
